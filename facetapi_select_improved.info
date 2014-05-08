@@ -1,0 +1,7 @@
+name = FacetAPI Select Dropdown Improved
+description = Extends the normal select dropdown facet provided by Facet API
+core = 7.x
+
+dependencies[] = facetapi_select
+
+files[] = includes/facetapi_select_dropdowns_improved.inc

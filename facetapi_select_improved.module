@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * Implements hook_ctools_plugin_pre_alter().
+ */
+function facetapi_select_improved_ctools_plugin_pre_alter(&$plugin, &$info) {
+  if ($info['module'] == 'facetapi'
+    && $info['type'] == 'widgets'
+    && $plugin['module'] == 'facetapi_select'
+    && $plugin['name'] == 'facetapi_select_dropdowns'
+  ) {
+    $plugin['handler']['class'] = 'FacetApiSelectDropdownsImproved';
+  }
+}
