@@ -10,27 +10,11 @@
  */
 class FacetApiSelectDropdownsImproved extends FacetapiSelectDropdowns {
 
-//  public function __construct($id, array $realm, FacetapiFacet $facet, stdClass $settings) {
-//    parent::__construct($id, $realm, $facet, $settings);
-//  }
-
   public function init() {
     parent::init();
     if ($this->settings->settings['one-value-only']) {
       $this->onlyOneValueAlter();
     }
-  }
-
-  /**
-   * Implements FacetapiWidget::execute().
-   *
-   * @see FacetapiSelectDropdowns::execute()
-   */
-  public function execute() {
-    if ($this->settings->settings['one-value-only']) {
-      //dpm($this->build);
-    }
-    parent::execute();
   }
 
   /**
