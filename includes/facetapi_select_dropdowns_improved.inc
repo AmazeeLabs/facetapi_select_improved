@@ -34,6 +34,33 @@ class FacetApiSelectDropdownsImproved extends FacetapiSelectDropdowns {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function execute() {
+
+    // Do not call FacetapiSelectDropdowns::execute(). Instead build select
+    // here. The main difference of our select is that it can be "deselected".
+    static $count = 0;
+    $count++;
+    $element = &$this->build[$this->facet['field alias']];
+    $options = array();
+    $active_url = '_current';
+    foreach ($element as $value => $item) {
+      $path = !empty($this->settings->settings['submit_page']) ? $this->settings->settings['submit_page'] : $item['#path'];
+      $path = strpos($item['#path'], $path) === 0 ? $item['#path'] : $path;
+      $url = url($path, array('query' => $item['#query']));
+      if ($item['#active']) {
+        $active_url = $url;
+        $url = '_current';
+      }
+      $options[$url] = $item['#markup'].' ('.$item['#count'].')';
+    }
+    $options = array($active_url => t('--Choose--')) + $options;
+    $element = facetapi_select_facet_form(array(), $options, $count);
+    $element['facets']['#value'] = '_current';
+  }
+
   public function settingsForm(&$form, &$form_state) {
     parent::settingsForm($form, $form_state);
 
