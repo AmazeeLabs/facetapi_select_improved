@@ -113,6 +113,9 @@ class FacetApiSelectDropdownsImproved extends FacetapiSelectDropdowns {
 
           // rebuild path & query
           $this->processFilterURLs($build[$this->facet['field alias']]);
+
+          // Apply sorts.
+          $this->applySorts($build[$this->facet['field alias']]);
         }
       }
     }
