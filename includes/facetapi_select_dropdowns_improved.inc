@@ -189,7 +189,7 @@ class FacetApiSelectDropdownsImproved extends FacetapiSelectDropdowns {
    *  Old params
    */
   private function removeActiveItemsFromUrlProcessorParams() {
-    $url_processor = &$this->facet->getAdapter()->getUrlProcessor();
+    $url_processor = $this->facet->getAdapter()->getUrlProcessor();
     $original_params = $url_processor->getParams();
 
     // Remove active items from this facet
@@ -207,7 +207,7 @@ class FacetApiSelectDropdownsImproved extends FacetapiSelectDropdowns {
    * @param array $original_params
    */
   private function revertActiveItemsFromUrlProcessorParams($original_params) {
-    $url_processor = &$this->facet->getAdapter()->getUrlProcessor();
+    $url_processor = $this->facet->getAdapter()->getUrlProcessor();
     $url_processor->setParams($original_params, $url_processor->getFilterKey());
   }
 
@@ -234,7 +234,7 @@ class FacetApiSelectDropdownsImproved extends FacetapiSelectDropdowns {
 
     $facet_info = $this->facet->getFacet();
     $adapter = $this->facet->getAdapter();
-    $processor = &$adapter->getProcessor($facet_info['name']);
+    $processor = $adapter->getProcessor($facet_info['name']);
 
     $values = $this->getActiveItemsValues();
 
