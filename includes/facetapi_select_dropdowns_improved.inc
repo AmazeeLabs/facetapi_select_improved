@@ -97,6 +97,7 @@ class FacetApiSelectDropdownsImproved extends FacetapiSelectDropdowns {
 
       if ($search = $adapter->getCurrentSearch()) {
         $rebuild = false;
+        /** @var SearchApiQuery $query */
         $query = clone $search[0];
         $filters = &$query->getFilter()->getFilters();
 
@@ -128,6 +129,26 @@ class FacetApiSelectDropdownsImproved extends FacetapiSelectDropdowns {
           if (empty($results['search_api_facets'][$this->facet['field alias']])) {
             // Continue only if new values were returned
             return;
+          }
+
+          // The number of facet results of the old query could be less than the
+          // number of facet results in new query. In this case, we need to
+          // rebuild a facet completely.
+          if (count($results['search_api_facets'][$this->facet['field alias']]) != count($build[$this->facet['field alias']])) {
+            // Processor will build the facet using the search results from the
+            // search_api_current_search() function. We need to temporary
+            // override its static cache, substituting the query results with
+            // ours.
+            $search_id = $query->getOption('search id');
+            $searches = &drupal_static('search_api_current_search', array());
+            $searches[$search_id] = array($query, $results);
+            // Get the new build.
+            $processor = new FacetapiFacetProcessor($facet);
+            $processor->process();
+            $build[$this->facet['field alias']] = $processor->getBuild();
+            // Restore the static cache if the search_api_current_search() func.
+            $searches[$search_id] = $search;
+            unset($searches);
           }
 
           // Update results count
